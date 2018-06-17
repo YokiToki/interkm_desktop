@@ -1,0 +1,143 @@
+html {
+    position: relative;
+    min-height: 100%;
+}
+
+body {
+    font-size: 14px;
+    margin-bottom: 20px;
+    overflow: hidden;
+    -webkit-user-select: none;
+    -webkit-app-region: drag;
+}
+
+footer {
+    padding-left: 6px;
+    font-size: 12px;
+    position: absolute;
+    bottom: 0;
+    width: 100%;
+}
+
+:focus {
+    outline: 0;
+    outline-color: transparent;
+    outline-style: none;
+}
+
+.hidden {
+    display: none;
+    visibility: hidden;
+}
+
+.view-form,
+.view-table {
+    display: flex;
+    flex-wrap: wrap;
+}
+
+.view-form {
+    margin: 6px;
+}
+
+.view-form > form {
+    display: flex;
+    flex-flow: row wrap;
+    align-items: center;
+}
+
+.view-form > .right {
+    margin-left: auto;
+}
+
+.view-form > form > label {
+    margin-bottom: 0;
+}
+
+.view-form > form > label > input {
+    width: 35px;
+    height: 24px;
+    text-align: center;
+    border-color: transparent;
+    background: #e8e8e8;
+    font-family: Courier, "Courier New", monospace;
+    text-transform: uppercase;
+}
+
+.view-form > form > label:after {
+    content: ":";
+    padding: 5px;
+    font-weight: bold;
+    color: #8a8a8a;
+}
+
+.view-form > form > label:last-of-type:after {
+    content: "";
+    padding: 0;
+}
+
+.view-form button,
+.view-table button {
+    margin-left: 6px;
+}
+
+.view-table button {
+    margin-bottom: 6px;
+}
+
+.view-form button[disabled],
+.view-table button[disabled] {
+    opacity: .5;
+}
+
+.view-table {
+    margin: 6px 2px 6px 2px;
+}
+
+.view-table > table > thead,
+.view-table > table > tbody > tr {
+    display: table;
+    width: 100%;
+    table-layout: fixed;
+}
+
+.view-table > table > tbody {
+    display: block;
+    overflow-x: auto;
+    max-height: 350px;
+}
+
+.view-table > table > tbody > tr.active {
+    color: #fff;
+    background-color: #116cd6;
+}
+
+.overlay {
+    background: rgba(0, 0, 0, 0.7);
+    position: absolute;
+    width: 100%;
+    height: 100%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.modal {
+    padding: 10px;
+    background: #f9f9f9;
+}
+
+.modal .view-form {
+    display: block;
+}
+
+.modal .view-form input {
+    border-color: transparent;
+    background: #e8e8e8;
+    font-family: Courier, "Courier New", monospace;
+}
+
+.modal-buttons {
+    margin-top: 25px;
+    float: right;
+}
