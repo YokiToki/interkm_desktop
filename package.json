@@ -1,14 +1,14 @@
 {
   "name": "interkm",
-  "version": "0.0.1",
+  "version": "0.0.2",
   "description": "Client application for read/write rw1990 keys",
   "main": "main.js",
   "scripts": {
     "serve": "electron .",
-    "start": "cross-env NODE_ENV=development concurrently \"npm run serve\" \"webpack --config webpack.config.dev.js --colors\"",
+    "start": "cross-env NODE_ENV=development concurrently \"yarn run serve\" \"webpack --config webpack.config.dev.js --colors\"",
     "build": "cross-env NODE_ENV=production node --trace-warnings ./node_modules/webpack/bin/webpack --config webpack.config.prod.js --colors",
-    "build-windows": "npm run build && build --win --x64",
-    "build-linux": "npm run build && build --linux",
+    "build-windows": "yarn run build && electron-builder --win --x64",
+    "build-linux": "yarn run build && electron-builder --linux",
     "postinstall": "electron-builder install-app-deps"
   },
   "build": {
@@ -46,29 +46,30 @@
   "license": "MIT",
   "homepage": "https://yokitoki.github.io/interkm",
   "dependencies": {
-    "react": "^16.4.0",
-    "react-dom": "^16.4.0",
-    "serialport": "^6.2.0"
+    "react": "^16.12.0",
+    "react-dom": "^16.12.0",
+    "serialport": "^8.0.7"
   },
   "devDependencies": {
-    "babel-core": "^6.26.3",
-    "babel-loader": "^7.1.4",
-    "babel-preset-env": "^1.7.0",
-    "babel-preset-react": "^6.24.1",
-    "babel-preset-stage-2": "^6.24.1",
-    "concurrently": "^3.5.1",
-    "cross-env": "^5.2.0",
-    "css-loader": "^0.28.11",
-    "electron": "^2.0.2",
-    "electron-builder": "^20.15.1",
-    "electron-reload": "^1.2.2",
-    "extract-text-webpack-plugin": "^3.0.2",
-    "file-loader": "^1.1.6",
-    "webpack": "^3.10.0"
+    "@babel/core": "^7.8.4",
+    "@babel/preset-env": "^7.8.4",
+    "@babel/preset-react": "^7.8.3",
+    "babel-loader": "^8.0.6",
+    "concurrently": "^5.1.0",
+    "cross-env": "^7.0.0",
+    "css-loader": "^3.4.2",
+    "electron": "^8.0.1",
+    "electron-builder": "^22.3.2",
+    "electron-reload": "^1.5.0",
+    "file-loader": "^5.1.0",
+    "mini-css-extract-plugin": "^0.9.0",
+    "webpack": "^4.41.6",
+    "webpack-cli": "^3.3.11",
+    "webpack-dev-server": "^3.10.3"
   },
   "devEngines": {
-    "node": ">=8.9.4",
-    "npm": ">=5.6.0",
-    "yarn": ">=1.7.0"
+    "node": ">=10.16.0",
+    "npm": ">=6.9.0",
+    "yarn": ">=1.22.0"
   }
 }

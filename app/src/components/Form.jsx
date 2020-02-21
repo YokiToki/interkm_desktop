@@ -3,7 +3,7 @@ import React, {Component} from 'react'
 export default class Form extends Component {
 
     constructor(props) {
-        super(props)
+        super(props);
 
         this.state = {
             buffer: props.buffer
@@ -19,11 +19,11 @@ export default class Form extends Component {
     }
 
     onChange(e, index) {
-        let buffer = [...this.state.buffer]
-        let value = e.target.value.toUpperCase()
+        let buffer = [...this.state.buffer];
+        let value = e.target.value.toUpperCase();
         if (value === '' || /^[0-9A-F]{1,2}$/gm.test(value)) {
-            buffer[index] = value
-            this.props.changeAction(buffer)
+            buffer[index] = value;
+            this.props.changeAction(buffer);
             this.setState({
                 buffer
             })
@@ -38,7 +38,7 @@ export default class Form extends Component {
                            onChange={(e) => this.onChange(e, index).bind(this)}/>
                 </label>
             )
-        })
+        });
 
         return (
             <form>

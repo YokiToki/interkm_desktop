@@ -2,19 +2,19 @@ import SerialPort from 'serialport'
 
 export default class Serial {
     constructor(setStatus) {
-        this.init()
+        this.init();
 
         setInterval((function () {
             if (this.port === null) {
-                this.find()
+                this.find();
                 setStatus('Waiting hardware...', true)
             } else {
                 if (this.connection === null) {
-                    this.open()
+                    this.open();
                     setStatus('Ready', false)
                 } else {
                     if (!this.connection.isOpen) {
-                        setStatus('Connection lost!', true)
+                        setStatus('Connection lost!', true);
                         this.init()
                     }
                 }
@@ -23,22 +23,22 @@ export default class Serial {
     }
 
     init() {
-        this.port = null
+        this.port = null;
         this.connection = null
     }
 
     find() {
-        SerialPort.list((err, ports) => {
-            let port = ports.find(
-                p => /arduino/i.test(p.manufacturer) || /2341|2A03/i.test(p.vendorId)
-            )
+        SerialPort.list()
+            .then(ports => {
+                let port = ports.find(
+                    p => /arduino/i.test(p.manufacturer) || /2341|2A03/i.test(p.vendorId)
+                );
 
-            if (typeof port !== 'undefined') {
-                this.port = port
-                return true
-            }
-        })
-        return false
+                if (typeof port !== 'undefined') {
+                    this.port = port;
+                }
+            })
+            .catch(err => console.error('Error: ', err.message))
     }
 
     open() {
@@ -48,7 +48,7 @@ export default class Serial {
     cmd(cmdString, prop = null) {
 
         return new Promise((resolve, reject) => {
-            let store = []
+            let store = [];
 
             if (this.connection == null || !this.connection.isOpen) {
                 reject(store)
@@ -61,22 +61,21 @@ export default class Serial {
 
             this.connection.write(cmdString + '\n', (err) => {
                 if (err) {
-                    return console.log('Error: ', err.message)
+                    return console.error('Error: ', err.message)
                 }
-            })
+            });
             this.connection.on('data', (data) => {
                 data.map(item => {
-                    store.push(item)
+                    store.push(item);
                     if (item === 10) {
                         try {
                             resolve(JSON.parse(Buffer.from(store).toString()))
-                        }
-                        catch (e) {
+                        } catch (e) {
                             reject(e)
                         }
                     }
                 })
-            })
+            });
 
             this.connection.on('error', (e) => {
                 reject(e)

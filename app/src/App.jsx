@@ -1,22 +1,24 @@
 import React, {Component} from 'react'
 import Storage from './Storage'
 import Serial from './Serial'
-import {} from './assets/css/photon.min.css'
-import {} from './assets/css/app.css'
+import './assets/css/photon.min.css'
+import './assets/css/app.css'
 import Form from './components/Form.jsx'
 import Tr from './components/Tr.jsx'
 import Modal from './components/Modal.jsx'
 
-// [{"name":"Metacom","value":"01:FF:FF:FF:FF:FF:FF:2F"},{"name":"Cyfral","value":"01:00:00:00:00:00:00:3D"},{"name":"Visit","value":"01:BE:40:11:5A:36:00:1E"}]
+// [{"name":"Metacom","value":"01:FF:FF:FF:FF:FF:FF:2F"},
+// {"name":"Cyfral","value":"01:00:00:00:00:00:00:3D"},
+// {"name":"Visit","value":"01:BE:40:11:5A:36:00:1E"}]
 
 export default class App extends Component {
 
-    constructor() {
-        super()
+    constructor(props) {
+        super(props);
 
         this.serial = new Serial((m, d) => {
             this.setStatus(m, d)
-        })
+        });
         this.storage = new Storage()
         this.state = {
             items: this.storage.items,
@@ -41,20 +43,20 @@ export default class App extends Component {
     }
 
     read() {
-        this.setStatus('Reading...', true)
+        this.setStatus('Reading...', true);
         this.serial.cmd('read').then(data => {
             if ('reply' in data) {
                 this.setState({
                     readBuffer: data.reply.split(":")
-                })
+                });
                 this.setStatus('Ready', false)
             }
         })
     }
 
     write() {
-        let prop = this.state.writeBuffer.join(":")
-        this.setStatus('Writing...', true)
+        let prop = this.state.writeBuffer.join(":");
+        this.setStatus('Writing...', true);
         this.serial.cmd('write', prop).then(() => {
             this.setStatus('Ready', false)
         })
@@ -67,8 +69,8 @@ export default class App extends Component {
     }
 
     selectItem(e, index) {
-        App.unselectAllItems()
-        e.currentTarget.className = 'active'
+        App.unselectAllItems();
+        e.currentTarget.className = 'active';
 
         this.setState({
             buttonsDisabled: {
@@ -90,8 +92,8 @@ export default class App extends Component {
                 name: '',
                 buffer: this.state.readBuffer
             }
-        })
-        App.toggleModalShow()
+        });
+        App.toggleModalShow();
     }
 
     addNewItem() {
@@ -102,12 +104,12 @@ export default class App extends Component {
                 name: '',
                 buffer: App.getEmptyBuffer()
             }
-        })
-        App.toggleModalShow()
+        });
+        App.toggleModalShow();
     }
 
     editItem() {
-        let index = this.state.selectedItem
+        let index = this.state.selectedItem;
 
         this.setState({
             modal: {
@@ -116,17 +118,17 @@ export default class App extends Component {
                 name: this.getNameByItemIndex(index),
                 buffer: this.state.writeBuffer
             }
-        })
+        });
         App.toggleModalShow()
     }
 
     saveItem(name, buffer, index = null) {
-        name = name === '' ? 'Default item' : name
+        name = name === '' ? 'Default item' : name;
 
         const item = {
             name: name,
             value: buffer.join(':').toUpperCase()
-        }
+        };
 
         if (index === null) {
             this.storage.items = item
@@ -134,13 +136,13 @@ export default class App extends Component {
             this.storage.edit(item, index)
         }
 
-        this.setState({items: this.storage.items})
+        this.setState({items: this.storage.items});
 
         App.toggleModalShow()
     }
 
     deleteItem() {
-        this.storage.del(this.state.selectedItem)
+        this.storage.del(this.state.selectedItem);
 
         this.setState({
             buttonsDisabled: {
@@ -152,13 +154,13 @@ export default class App extends Component {
             selectedItem: null,
             writeBuffer: App.getEmptyBuffer(),
             items: this.storage.items
-        })
+        });
 
         App.unselectAllItems()
     }
 
     setStatus(status, loading = null) {
-        loading = loading === null ? this.state.loading : loading
+        loading = loading === null ? this.state.loading : loading;
         this.setState({
             buttonsDisabled: {
                 ...this.state.buttonsDisabled,
@@ -191,7 +193,7 @@ export default class App extends Component {
     }
 
     static unselectAllItems() {
-        let elements = document.querySelectorAll('tbody tr')
+        let elements = document.querySelectorAll('tbody tr');
 
         Array.prototype.forEach.call(elements, function (el) {
             el.classList.remove('active')
@@ -199,7 +201,7 @@ export default class App extends Component {
     }
 
     static toggleModalShow() {
-        let overlay = document.querySelector('.overlay')
+        let overlay = document.querySelector('.overlay');
         overlay.classList.toggle('hidden')
     }
 
@@ -207,7 +209,7 @@ export default class App extends Component {
         const itemsRender = this.state.items.map((item, index) => {
             return <Tr action={(e) => this.selectItem(e, index)} key={index} index={index} name={item.name}
                        value={item.value}/>
-        })
+        });
 
         return (
             <div className="window">

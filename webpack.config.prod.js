@@ -1,21 +1,17 @@
-const ExtractTextPlugin = require('extract-text-webpack-plugin')
+const MiniCssExtractPlugin = require('mini-css-extract-plugin');
 
 module.exports = {
-    target: 'electron',
-
+    target: 'electron-main',
     externals: {
         bindings: 'require("bindings")',
         serialport: 'require("serialport")'
     },
-
     entry: './app/src/entry.js',
-
     output: {
         path: __dirname + '/app/build',
         publicPath: 'build/',
         filename: 'bundle.js'
     },
-
     module: {
         rules: [
             {
@@ -23,33 +19,24 @@ module.exports = {
                 loader: 'babel-loader',
                 options: {
                     presets: [
-                        'env',
-                        'react',
-                        'stage-2'
+                        '@babel/preset-env',
+                        '@babel/preset-react',
                     ]
                 }
             },
             {
                 test: /\.css$/,
-                loader: ExtractTextPlugin.extract({
-                    use: ['css-loader']
-                })
+                use: [MiniCssExtractPlugin.loader, 'css-loader'],
             },
             {
                 test: /\.(png|jpg|gif|svg|ico|eot|ttf|woff)$/,
-                loader: 'file-loader?limit=100000',
-                query: {
-                    name: '[name].[ext]?[hash]'
-                }
+                use: [{loader: 'file-loader'}],
             }
         ]
     },
-
     plugins: [
-        new ExtractTextPlugin({
+        new MiniCssExtractPlugin({
             filename: 'bundle.css',
-            disable: false,
-            allChunks: true
         })
     ]
-}
+};
