@@ -32,6 +32,8 @@ And set environment variable:
 > set VCTargetsPath=C:\Program Files (x86)\MSBuild\Microsoft.Cpp\v4.0\V140
 ```
 
+Maybe you need download [Build Tools for Visual Studio](https://download.visualstudio.microsoft.com/download/pr/11503713/e64d79b40219aea618ce2fe10ebd5f0d/vs_BuildTools.exe)
+
 ## Run
 
 Start the app in the `dev` environment:

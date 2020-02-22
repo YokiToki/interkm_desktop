@@ -46,6 +46,7 @@
   "license": "MIT",
   "homepage": "https://yokitoki.github.io/interkm",
   "dependencies": {
+    "bcrypt": "^4.0.0",
     "react": "^16.12.0",
     "react-dom": "^16.12.0",
     "serialport": "^8.0.7"
@@ -58,7 +59,7 @@
     "concurrently": "^5.1.0",
     "cross-env": "^7.0.0",
     "css-loader": "^3.4.2",
-    "electron": "^8.0.1",
+    "electron": "^7.1.13",
     "electron-builder": "^22.3.2",
     "electron-reload": "^1.5.0",
     "file-loader": "^5.1.0",
