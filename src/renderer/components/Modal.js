@@ -1,21 +1,21 @@
-import React, {Component} from 'react'
-import Form from './Form.jsx'
+import React, {Component} from 'react';
+import Form from './Form';
 
 export default class Modal extends Component {
 
     onChangeName(e) {
-        this.props.data.name = e.target.value
-        this.forceUpdate()
+        this.props.data.name = e.target.value;
+        this.forceUpdate();
     }
 
     onChangeBuffer(buffer) {
-        this.props.data.buffer = buffer
-        this.forceUpdate()
+        this.props.data.buffer = buffer;
+        this.forceUpdate();
     }
 
     render() {
-        const {title, index, name, buffer} = this.props.data
-        const className = title.toLowerCase().replace(' ', '-')
+        const {title, index, name, buffer} = this.props.data;
+        const className = title.toLowerCase().replace(' ', '-');
 
         // changeAction={this.props.changeAction}
         return (
@@ -39,7 +39,7 @@ export default class Modal extends Component {
                     </div>
                 </div>
             </div>
-        )
+        );
     }
 
 }

@@ -1,4 +1,4 @@
-import React, {Component} from 'react'
+import React, {Component} from 'react';
 
 export default class Form extends Component {
 
@@ -7,14 +7,14 @@ export default class Form extends Component {
 
         this.state = {
             buffer: props.buffer
-        }
+        };
     }
 
     componentWillReceiveProps(nextProps) {
         if (this.props.buffer !== nextProps.buffer) {
             this.setState({
                 buffer: nextProps.buffer
-            })
+            });
         }
     }
 
@@ -26,7 +26,7 @@ export default class Form extends Component {
             this.props.changeAction(buffer);
             this.setState({
                 buffer
-            })
+            });
         }
     }
 
@@ -37,13 +37,13 @@ export default class Form extends Component {
                     <input type="text" maxLength="2" value={item} pattern="[A-F\d]+" readOnly={this.props.readOnly}
                            onChange={(e) => this.onChange(e, index).bind(this)}/>
                 </label>
-            )
+            );
         });
 
         return (
             <form>
                 {itemsRender}
             </form>
-        )
+        );
     }
 }

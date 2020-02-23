@@ -1,15 +1,19 @@
-import React, {Component} from 'react'
-import Storage from './Storage'
-import Serial from './Serial'
-import './assets/css/photon.min.css'
-import './assets/css/app.css'
-import Form from './components/Form.jsx'
-import Tr from './components/Tr.jsx'
-import Modal from './components/Modal.jsx'
+import React, {Component} from 'react';
+import Storage from '../common/Storage';
+import Serial from '../common/Serial';
+import '../assets/css/photon.min.css';
+import '../assets/css/app.css';
+import Form from './components/Form';
+import Tr from './components/Tr';
+import Modal from './components/Modal';
 
-// [{"name":"Metacom","value":"01:FF:FF:FF:FF:FF:FF:2F"},
-// {"name":"Cyfral","value":"01:00:00:00:00:00:00:3D"},
-// {"name":"Visit","value":"01:BE:40:11:5A:36:00:1E"}]
+/*
+const defaultBase = [
+    {"name": "Metacom", "value": "01:FF:FF:FF:FF:FF:FF:2F"},
+    {"name": "Cyfral", "value": "01:00:00:00:00:00:00:3D"},
+    {"name": "Visit", "value": "01:BE:40:11:5A:36:00:1E"}
+];
+*/
 
 export default class App extends Component {
 
@@ -17,9 +21,9 @@ export default class App extends Component {
         super(props);
 
         this.serial = new Serial((m, d) => {
-            this.setStatus(m, d)
+            this.setStatus(m, d);
         });
-        this.storage = new Storage()
+        this.storage = new Storage();
         this.state = {
             items: this.storage.items,
             writeBuffer: App.getEmptyBuffer(),
@@ -39,7 +43,7 @@ export default class App extends Component {
                 name: '',
                 buffer: App.getEmptyBuffer(),
             }
-        }
+        };
     }
 
     read() {
@@ -47,25 +51,25 @@ export default class App extends Component {
         this.serial.cmd('read').then(data => {
             if ('reply' in data) {
                 this.setState({
-                    readBuffer: data.reply.split(":")
+                    readBuffer: data.reply.split(':')
                 });
-                this.setStatus('Ready', false)
+                this.setStatus('Ready', false);
             }
-        })
+        });
     }
 
     write() {
-        let prop = this.state.writeBuffer.join(":");
+        let prop = this.state.writeBuffer.join(':');
         this.setStatus('Writing...', true);
         this.serial.cmd('write', prop).then(() => {
-            this.setStatus('Ready', false)
-        })
+            this.setStatus('Ready', false);
+        });
     }
 
     clear() {
         this.setState({
             readBuffer: App.getEmptyBuffer()
-        })
+        });
     }
 
     selectItem(e, index) {
@@ -81,7 +85,7 @@ export default class App extends Component {
             },
             selectedItem: index,
             writeBuffer: this.getBufferByItemIndex(index)
-        })
+        });
     }
 
     addItem() {
@@ -119,7 +123,7 @@ export default class App extends Component {
                 buffer: this.state.writeBuffer
             }
         });
-        App.toggleModalShow()
+        App.toggleModalShow();
     }
 
     saveItem(name, buffer, index = null) {
@@ -131,14 +135,14 @@ export default class App extends Component {
         };
 
         if (index === null) {
-            this.storage.items = item
+            this.storage.items = item;
         } else {
-            this.storage.edit(item, index)
+            this.storage.edit(item, index);
         }
 
         this.setState({items: this.storage.items});
 
-        App.toggleModalShow()
+        App.toggleModalShow();
     }
 
     deleteItem() {
@@ -156,7 +160,7 @@ export default class App extends Component {
             items: this.storage.items
         });
 
-        App.unselectAllItems()
+        App.unselectAllItems();
     }
 
     setStatus(status, loading = null) {
@@ -169,46 +173,46 @@ export default class App extends Component {
             },
             status: status,
             loading: loading
-        })
+        });
     }
 
     getBufferByItemIndex(index) {
         if (index in this.state.items) {
-            return this.state.items[index].value.split(":")
+            return this.state.items[index].value.split(':');
         }
 
-        return App.getEmptyBuffer()
+        return App.getEmptyBuffer();
     }
 
     getNameByItemIndex(index) {
         if (index in this.state.items) {
-            return this.state.items[index].name
+            return this.state.items[index].name;
         }
 
-        return null
+        return null;
     }
 
     static getEmptyBuffer() {
-        return [...Array(8)].map(() => '')
+        return [...Array(8)].map(() => '');
     }
 
     static unselectAllItems() {
         let elements = document.querySelectorAll('tbody tr');
 
         Array.prototype.forEach.call(elements, function (el) {
-            el.classList.remove('active')
-        })
+            el.classList.remove('active');
+        });
     }
 
     static toggleModalShow() {
         let overlay = document.querySelector('.overlay');
-        overlay.classList.toggle('hidden')
+        overlay.classList.toggle('hidden');
     }
 
     render() {
         const itemsRender = this.state.items.map((item, index) => {
             return <Tr action={(e) => this.selectItem(e, index)} key={index} index={index} name={item.name}
-                       value={item.value}/>
+                       value={item.value}/>;
         });
 
         return (
@@ -252,6 +256,6 @@ export default class App extends Component {
                 <Modal saveAction={this.saveItem.bind(this)} cancelAction={() => App.toggleModalShow()}
                        data={this.state.modal}/>
             </div>
-        )
+        );
     }
 }
