@@ -1,27 +1,47 @@
 {
   "name": "interkm",
-  "version": "0.0.2",
+  "version": "0.0.3",
   "description": "Client application for read/write rw1990 keys",
-  "main": "main.js",
+  "author": {
+    "name": "Stanislav Tamat",
+    "email": "libastral.so@yandex.ru"
+  },
+  "license": "MIT",
+  "homepage": "https://yokitoki.github.io/interkm",
   "scripts": {
-    "serve": "electron .",
-    "start": "cross-env NODE_ENV=development concurrently \"yarn run serve\" \"webpack --config webpack.config.dev.js --colors\"",
-    "build": "cross-env NODE_ENV=production node --trace-warnings ./node_modules/webpack/bin/webpack --config webpack.config.prod.js --colors",
-    "build-windows": "yarn run build && electron-builder --win --x64",
-    "build-linux": "yarn run build && electron-builder --linux",
-    "postinstall": "electron-builder install-app-deps"
+    "start": "electron-webpack dev",
+    "compile": "electron-webpack",
+    "build:windows": "yarn compile && electron-builder --win --x64",
+    "build:linux": "yarn compile && electron-builder --linux",
+    "build:dir": "yarn dist --dir -c.compression=store -c.mac.identity=null",
+    "build:clean": "rm -rf dist/ && rm -rf release/",
+    "build:deps": "electron-builder install-app-deps",
+    "build:publish": "electron-builder --publish onTag"
+  },
+  "electronWebpack": {
+    "commonDistDirectory": "dist",
+    "commonSourceDirectory": "src/common",
+    "main": {
+      "sourceDirectory": "src/main"
+    },
+    "renderer": {
+      "sourceDirectory": "src/renderer",
+      "webpackConfig": "src/renderer/config/webpack.config.js",
+      "template": "src/renderer/public/index.html"
+    }
+  },
+  "babel": {
+    "presets": [
+      "@babel/preset-react",
+      "@babel/preset-env"
+    ]
   },
   "build": {
     "productName": "interkm",
     "appId": "io.github.yokitoki",
-    "files": [
-      "app/build/**/*",
-      "app/src/assets/**/*",
-      "app/index.html",
-      "node_modules/**/*",
-      "main.js",
-      "package.json"
-    ],
+    "publish": {
+      "provider": "github"
+    },
     "win": {
       "target": [
         "portable"
@@ -29,8 +49,9 @@
     },
     "linux": {
       "target": [
+        "tar.gz",
         "deb",
-        "tar.gz"
+        "appImage"
       ],
       "category": "Development"
     },
@@ -39,34 +60,28 @@
       "output": "release"
     }
   },
-  "author": {
-    "name": "Stanislav Tamat",
-    "email": "libastral.so@yandex.ru"
-  },
-  "license": "MIT",
-  "homepage": "https://yokitoki.github.io/interkm",
   "dependencies": {
     "bcrypt": "^4.0.0",
     "react": "^16.12.0",
     "react-dom": "^16.12.0",
-    "serialport": "^8.0.7"
+    "serialport": "^8.0.7",
+    "source-map-support": "^0.5.12"
   },
   "devDependencies": {
     "@babel/core": "^7.8.4",
     "@babel/preset-env": "^7.8.4",
     "@babel/preset-react": "^7.8.3",
     "babel-loader": "^8.0.6",
-    "concurrently": "^5.1.0",
-    "cross-env": "^7.0.0",
-    "css-loader": "^3.4.2",
-    "electron": "^7.1.13",
+    "electron": "7.1.13",
     "electron-builder": "^22.3.2",
-    "electron-reload": "^1.5.0",
-    "file-loader": "^5.1.0",
-    "mini-css-extract-plugin": "^0.9.0",
-    "webpack": "^4.41.6",
-    "webpack-cli": "^3.3.11",
-    "webpack-dev-server": "^3.10.3"
+    "electron-webpack": "^2.7.4",
+    "eslint": "^5.16.0",
+    "eslint-config-prettier": "^4.2.0",
+    "eslint-plugin-prettier": "^3.1.2",
+    "eslint-plugin-react": "^7.12.4",
+    "prettier": "^1.17.0",
+    "prettier-eslint": "^8.8.2",
+    "webpack": "^4.41.6"
   },
   "devEngines": {
     "node": ">=10.16.0",

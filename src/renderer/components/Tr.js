@@ -1,4 +1,4 @@
-import React, {Component} from 'react'
+import React, {Component} from 'react';
 
 export default class Tr extends Component {
     render() {
@@ -8,6 +8,6 @@ export default class Tr extends Component {
                 <td>{this.props.name}</td>
                 <td>{this.props.value}</td>
             </tr>
-        )
+        );
     }
 }

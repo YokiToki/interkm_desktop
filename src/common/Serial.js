@@ -1,4 +1,4 @@
-import SerialPort from 'serialport'
+import SerialPort from 'serialport';
 
 export default class Serial {
     constructor(setStatus) {
@@ -7,24 +7,24 @@ export default class Serial {
         setInterval((function () {
             if (this.port === null) {
                 this.find();
-                setStatus('Waiting hardware...', true)
+                setStatus('Waiting hardware...', true);
             } else {
                 if (this.connection === null) {
                     this.open();
-                    setStatus('Ready', false)
+                    setStatus('Ready', false);
                 } else {
                     if (!this.connection.isOpen) {
                         setStatus('Connection lost!', true);
-                        this.init()
+                        this.init();
                     }
                 }
             }
-        }).bind(this), 3000)
+        }).bind(this), 3000);
     }
 
     init() {
         this.port = null;
-        this.connection = null
+        this.connection = null;
     }
 
     find() {
@@ -38,30 +38,29 @@ export default class Serial {
                     this.port = port;
                 }
             })
-            .catch(err => console.error('Error: ', err.message))
+            .catch(err => console.error('Error: ', err.message));
     }
 
     open() {
-        this.connection = new SerialPort(this.port.comName)
+        this.connection = new SerialPort(this.port.path);
     }
 
     cmd(cmdString, prop = null) {
-
         return new Promise((resolve, reject) => {
             let store = [];
 
             if (this.connection == null || !this.connection.isOpen) {
-                reject(store)
+                reject(store);
             }
 
 
             if (prop != null) {
-                cmdString += ' ' + prop
+                cmdString += ' ' + prop;
             }
 
             this.connection.write(cmdString + '\n', (err) => {
                 if (err) {
-                    return console.error('Error: ', err.message)
+                    return console.error('Error: ', err.message);
                 }
             });
             this.connection.on('data', (data) => {
@@ -69,18 +68,17 @@ export default class Serial {
                     store.push(item);
                     if (item === 10) {
                         try {
-                            resolve(JSON.parse(Buffer.from(store).toString()))
+                            resolve(JSON.parse(Buffer.from(store).toString()));
                         } catch (e) {
-                            reject(e)
+                            reject(e);
                         }
                     }
-                })
+                });
             });
 
             this.connection.on('error', (e) => {
-                reject(e)
-            })
-        })
-
+                reject(e);
+            });
+        });
     }
 }

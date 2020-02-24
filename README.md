@@ -23,7 +23,7 @@ For building on Windows you need install build tools.
 As Administrator run:
 
 ```
-> npm i -g --production windows-build-tools
+> yarn global add windows-build-tools
 ```
 
 And set environment variable:
@@ -39,7 +39,13 @@ Maybe you need download [Build Tools for Visual Studio](https://download.visuals
 Start the app in the `dev` environment:
 
 ```
-$ npm start
+$ yarn start
+```
+
+If you got error, about incorrect version of native modules, try run following command:
+
+```
+$ yarn build:deps
 ```
 
 ## Building
@@ -47,11 +53,11 @@ $ npm start
 To build apps (tar.gz, deb) for the linux:
 
 ```
-$ npm run build-linux
+$ yarn build-linux
 ```
 
 Windows portable:
 
 ```
-> npm run build-windows
+> yarn build-windows
 ```
