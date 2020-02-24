@@ -15,7 +15,8 @@
     "build:linux": "yarn compile && electron-builder --linux",
     "build:dir": "yarn dist --dir -c.compression=store -c.mac.identity=null",
     "build:clean": "rm -rf dist/ && rm -rf release/",
-    "build:deps": "electron-builder install-app-deps"
+    "build:deps": "electron-builder install-app-deps",
+    "build:publish": "electron-builder --publish onTag"
   },
   "electronWebpack": {
     "commonDistDirectory": "dist",
@@ -38,6 +39,9 @@
   "build": {
     "productName": "interkm",
     "appId": "io.github.yokitoki",
+    "publish": {
+      "provider": "github"
+    },
     "win": {
       "target": [
         "portable"
@@ -46,7 +50,8 @@
     "linux": {
       "target": [
         "tar.gz",
-        "deb"
+        "deb",
+        "appImage"
       ],
       "category": "Development"
     },
